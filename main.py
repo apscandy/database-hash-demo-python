@@ -6,7 +6,7 @@ password = "Hello world"
 
 
 if __name__ == "__main__":
-    #database_add_user_salt_and_pepper(username, password)
+    database_add_user_salt_and_pepper(username, password)
     #print(database_find_user(username))
     #print(database_find_user_password(username))
     #print(hash_check('Hello', str(database_find_user_password(username)[0])))

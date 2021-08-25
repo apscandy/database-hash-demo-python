@@ -1,5 +1,6 @@
 import sqlite3
 from hashing import *
+from functools import wraps
 
 connection_to_database = sqlite3.connect('passwords.db')
 database_cursor = connection_to_database.cursor()
@@ -7,6 +8,7 @@ database_cursor = connection_to_database.cursor()
 
 def database_creation(func):
     """Decorator"""
+    @wraps(func)
     def wrapper(*args, **kwargs)->None:
         """
         Creates the database and tables if it dose not exist
@@ -29,6 +31,7 @@ def database_creation(func):
 
 def table_check(func):
     """Decorator"""
+    @wraps(func)
     def wrapper(*args, **kwargs)->None:
         """Adds a try and excpet block for table functions"""
         try:
