@@ -31,4 +31,13 @@ combinations or 9.6196304190416 x 10^111.
 
 ## **Pepper**
 
+If salt is adding randomness to a password what is pepper then?, pepper is adding reversible hidden randomness to a password, emphasis on hidden it's not stored with the salt or on a database, there are 3 types of salt each offering a different level of security with its own trade-offs,if you are wondering what they are is "Shared Secret Pepper", "Unique Pepper Per User" and "Randomly Selected Pepper". For this demo I have selected to use the "Shared Secret Pepper" to keep the concept ease for everyone to understand.
+
+```python
+def pepper(password:str)->str:
+    password = password[::-1]
+    return password
+```
+In this example I have a simple little algorithm the just reverses the string I.E. "Hello" gets turned into "elloH" thats it. But this alone will trigger the avalanche effect.
+
 ## **Python code examples**
