@@ -41,3 +41,29 @@ def pepper(password:str)->str:
 In this example I have a simple little algorithm the just reverses the string I.E. "Hello" gets turned into "elloH" thats it. But this alone will trigger the avalanche effect.
 
 ## **Python code examples**
+How do we add a password to a database with salt and pepper
+```python
+@database_creation
+def database_add_user_salt_and_pepper(username:str, password:str)->None:
+    salt = salt_generator()
+    password = pepper(password)
+    password = password + salt
+    password = hash_password(password)
+    with connection_to_database:
+        database_cursor.execute(
+            'INSERT INTO passwords VALUES (:username, :password, :salt)', 
+            {'username': username, 'password': password, "salt": salt})
+
+```
+
+
+How do we check if a password equals the stored hash?.
+```python
+def salt_hash_check(password:str, database_hash:str, database_salt:str)->bool:
+    password = pepper(password)
+    password = hash_password(password + database_salt)
+    if password == database_hash:
+        return True
+    else:
+        return False
+```
