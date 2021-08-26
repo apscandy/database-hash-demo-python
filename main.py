@@ -7,6 +7,7 @@ password = "Hello world"
 
 
 def main():
+    """Dispaly system"""
     while True:
         print("PLease select an option")
         print("Enter 1 to add a user to the database")
@@ -18,12 +19,16 @@ def main():
         option = input(">$ ")
         clear_terminal()
         option_check(option)
+        
 
 def clear_terminal()->None:
-    '''Clears the terminal for a clean output'''
+    """Clears the terminal for a clean output"""
     if os.name == 'nt': os.system("cls")
     elif os.name == 'posix': os.system("clear")
+
+
 def option_check(option):
+    """Menu system"""
     if option == "6":
         clear_terminal()
         os.sys.exit(1)
@@ -36,14 +41,11 @@ def option_check(option):
     elif option == "3":
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
-        valid = login(username, password)
-        if valid:
-            print("Yay you are logged in \n\n")
-        else:
-            print("Please try again \n\n")
+        print(login(username, password))
     elif option == "2":
         username = input("Please enter a user you wish to follow: ")
-        print(database_find_user(username))
+        clear_terminal()
+        print(database_find_user(username), "\n\n")
     elif option == "1":
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
@@ -54,10 +56,14 @@ def option_check(option):
         main()
 
 def login(username, password):
+    """Front end login system"""
     database_hash = database_find_user_password(username)
     database_salt = database_find_user_salt(username)
-
-    return salt_hash_check(password, database_hash, database_salt)
+    valid = salt_hash_check(password, database_hash, database_salt)
+    if valid:
+        return "Yay you are logged in \n\n"
+    else:
+        return "Please try again \n\n"
 
 
 
