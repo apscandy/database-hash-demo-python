@@ -1,5 +1,5 @@
-from database_utils import *
-from hashing import *
+
+from backend import database_utils, hashing
 import os 
 
 username = "linus"
@@ -33,10 +33,10 @@ def option_check(option):
         clear_terminal()
         os.sys.exit(1)
     elif option == "5":
-        database_delete_all()
+        database_utils.database_delete_all()
         print("database deleted \n\n")
     elif option == "4":
-        print(database_list_all())
+        print(database_utils.database_list_all())
         print()
     elif option == "3":
         username = input("Please enter your username: ")
@@ -45,11 +45,11 @@ def option_check(option):
     elif option == "2":
         username = input("Please enter a user you wish to follow: ")
         clear_terminal()
-        print(database_find_user(username), "\n\n")
+        print(database_utils.database_find_user(username), "\n\n")
     elif option == "1":
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
-        database_add_user_salt_and_pepper(username, password)
+        database_utils.database_add_user_salt_and_pepper(username, password)
         print("user added... \n\n")
     else:
         print("Please enter a valid option!!! \n\n")
@@ -57,9 +57,9 @@ def option_check(option):
 
 def login(username, password):
     """Front end login system"""
-    database_hash = database_find_user_password(username)
-    database_salt = database_find_user_salt(username)
-    valid = salt_hash_check(password, database_hash, database_salt)
+    database_hash = database_utils.database_find_user_password(username)
+    database_salt = database_utils.database_find_user_salt(username)
+    valid = hashing.salt_hash_check(password, database_hash, database_salt)
     if valid:
         return "Yay you are logged in \n\n"
     else:

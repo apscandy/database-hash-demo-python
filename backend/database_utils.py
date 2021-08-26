@@ -1,5 +1,5 @@
 import sqlite3
-from hashing import *
+from backend import *
 from functools import wraps
 
 connection_to_database = sqlite3.connect('passwords.db')
