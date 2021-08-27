@@ -1,5 +1,5 @@
 import sqlite3
-from backend import *
+from backend import hashing 
 from functools import wraps
 
 connection_to_database = sqlite3.connect('passwords.db')
@@ -60,10 +60,10 @@ def database_add_user_salt_and_pepper(username:str, password:str)->None:
         ('andrew', '0e9862684b93ab22744fa77f907256ad', '0fYst66bDGTBi97El1rOzdbP0su8NOoAqNyYuekUb4Rav9WyYw6zOtjTqzhTHcn')
 
     """
-    salt = salt_generator()
-    password = pepper(password)
+    salt = hashing.salt_generator()
+    password = hashing.pepper(password)
     password = password + salt
-    password = hash_password(password)
+    password = hashing.hash_password(password)
     with connection_to_database:
         database_cursor.execute(
             'INSERT INTO passwords VALUES (:username, :password, :salt)', 
