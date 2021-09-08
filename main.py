@@ -117,8 +117,11 @@ def option_check(option):
     elif option == "1":
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
-        database_utils.database_add_user_salt_and_pepper(username, password)
-        print("user added... \n\n")
+        if database_utils.username_check(username) == False:
+            print("username taken...\n\n")
+        else: 
+            database_utils.database_add_user_salt_and_pepper(username, password)
+            print("user added... \n\n")
     else:
         print("Please enter a valid option!!! \n\n")
         main()

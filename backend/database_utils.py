@@ -7,17 +7,17 @@ database_cursor = connection_to_database.cursor()
 
 
 def database_creation(func):
-    """Decorator"""
+    """
+    Creates the database and tables if it dose not exist
+    
+    Tables:
+        username (text):
+        password (text):
+        salt (text):
+    """
     @wraps(func)
     def wrapper(*args, **kwargs)->None:
-        """
-        Creates the database and tables if it dose not exist
-        
-        Tables:
-            username (text):
-            password (text):
-            salt (text):
-        """
+
         database_cursor.execute("""
             CREATE TABLE IF NOT EXISTS passwords (
             username TEXT,
@@ -30,10 +30,9 @@ def database_creation(func):
 
 
 def table_check(func):
-    """Decorator"""
+    """Adds a try and excpet block for table functions"""
     @wraps(func)
     def wrapper(*args, **kwargs)->None:
-        """Adds a try and excpet block for table functions"""
         try:
             func(*args, **kwargs)
         except sqlite3.OperationalError:
@@ -60,14 +59,15 @@ def database_add_user_salt_and_pepper(username:str, password:str)->None:
         ('andrew', '0e9862684b93ab22744fa77f907256ad', '0fYst66bDGTBi97El1rOzdbP0su8NOoAqNyYuekUb4Rav9WyYw6zOtjTqzhTHcn')
 
     """
-    salt = hashing.salt_generator()
-    password = hashing.pepper(password)
-    password = password + salt
-    password = hashing.hash_password(password)
-    with connection_to_database:
-        database_cursor.execute(
-            'INSERT INTO passwords VALUES (:username, :password, :salt)', 
-            {'username': username, 'password': password, "salt": salt})
+    if username_check(username):
+        salt = hashing.salt_generator()
+        password = hashing.pepper(password)
+        password = password + salt
+        password = hashing.hash_password(password)
+        with connection_to_database:
+            database_cursor.execute(
+                'INSERT INTO passwords VALUES (:username, :password, :salt)', 
+                {'username': username, 'password': password, "salt": salt})
 
 
 @table_check
@@ -152,3 +152,16 @@ def database_delete_all()->None:
     """Deleles everything in the table"""
     with connection_to_database:
         database_cursor.execute('DELETE FROM passwords')
+
+def username_check(username:str)->bool:
+    """Check if username is taken"""
+    try:
+        database_cursor.execute(
+            "SELECT username FROM passwords WHERE username=:username", 
+            {"username": username})
+        if database_cursor.fetchone()[0]:
+            return False
+    except TypeError:
+        return True
+
+
