@@ -95,7 +95,7 @@ def clear_terminal()->None:
     elif os.name == 'posix': os.system("clear")
 
 
-def option_check(option):
+def option_check(option)->None:
     """Menu system"""
     if option == "6":
         clear_terminal()
@@ -126,7 +126,7 @@ def option_check(option):
         print("Please enter a valid option!!! \n\n")
         main()
 
-def login(username, password):
+def login(username, password)->None:
     """Front end login system"""
     database_hash = database_utils.database_find_user_password(username)
     database_salt = database_utils.database_find_user_salt(username)
